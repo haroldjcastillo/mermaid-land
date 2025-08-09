@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid with D3.js Interactivity Sample (Hover Fixed)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="bg-blue-600 text-white py-6 mb-4 shadow">
+        <h1 class="text-3xl font-bold text-center">Mermaid with D3.js Interactivity Sample</h1>
+    </header>
+    <main class="container mx-auto space-y-2">
+        <!-- Controls Panel -->
+        <section class="p-4 border rounded bg-white shadow-sm" id="controls">
+            <h2 class="text-lg font-semibold mb-3">View Controls</h2>
+            <div class="flex flex-wrap items-end gap-6">
+                <!-- Translate (X and Y inline) -->
+                <div class="flex flex-col min-w-[260px]">
+                    <label class="text-sm font-medium mb-1">Translate</label>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="flex items-center gap-2 min-w-[220px]">
+                            <span class="text-xs text-gray-600 w-12">X</span>
+                            <input id="ctrl-tx" type="range" min="-2000" max="2000" step="1" value="0" class="w-56">
+                            <input id="ctrl-tx-num" type="number" min="-2000" max="2000" step="1" value="0" class="w-24 border rounded p-1">
+                        </div>
+                        <div class="flex items-center gap-2 min-w-[220px]">
+                            <span class="text-xs text-gray-600 w-12">Y</span>
+                            <input id="ctrl-ty" type="range" min="-2000" max="2000" step="1" value="0" class="w-56">
+                            <input id="ctrl-ty-num" type="number" min="-2000" max="2000" step="1" value="0" class="w-24 border rounded p-1">
+                        </div>
+                    </div>
+                </div>
+                <!-- Scale inline -->
+                <div class="flex flex-col min-w-[260px]">
+                    <label class="text-sm font-medium mb-1" for="ctrl-scale">Scale</label>
+                    <div class="flex items-center gap-2">
+                        <input id="ctrl-scale" type="range" min="0.1" max="5" step="0.01" value="1" class="w-56">
+                        <input id="ctrl-scale-num" type="number" min="0.1" max="5" step="0.01" value="1" class="w-24 border rounded p-1">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <button id="btn-fit" class="px-3 py-2 bg-blue-600 text-white rounded">Fit to View</button>
+            </div>
+            <!-- Live view metrics -->
+            <div id="view-metrics" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                <div class="p-2 border rounded bg-gray-50">
+                    <div class="font-medium mb-1">SVG</div>
+                    <div>pos: (<span id="svg-x">0</span>, <span id="svg-y">0</span>)</div>
+                    <div>size: <span id="svg-w">0</span> &#xD7; <span id="svg-h">0</span></div>
+                </div>
+                <div class="p-2 border rounded bg-gray-50">
+                    <div class="font-medium mb-1">Group g</div>
+                    <div>translate: (<span id="g-tx">0</span>, <span id="g-ty">0</span>) scale: <span id="g-scale">1</span></div>
+                    <div>size: <span id="g-w">0</span> &#xD7; <span id="g-h">0</span></div>
+                </div>
+            </div>
+        </section>
+        <div class="split-row w-full space-x-2">
+            <!-- Mermaid code column -->
+            <div class="split-half p-0">
+                <textarea id="mermaid-code" class="w-full h-full p-2 border rounded font-mono" spellcheck="false">
+flowchart TD
+    B["Send Email"] --> C["Generate Payment Link"]
+    C --> D["Authorize Payment"]
+    A["Create Reservation"] --> n1{"Decision"}
+    n1 --> B
+    n1 --> C
+    n1 --> D["Payment"]
+                </textarea>
+            </div>
+            <!-- Mermaid render column -->
+            <div class="split-half">
+                <div id="mermaid-diagram"></div>
+            </div>
+        </div>
+    </main>
+    <!-- Modal for editing -->
+    <div id="overlay"></div>
+    <div id="modal" class="p-4 bg-white rounded shadow min-w-[300px]">
+        <h2 class="font-bold text-xl mb-2">Node Info</h2>
+        <p><span class="font-bold">ID:</span> <span id="node-id"></span></p>
+        <p><span class="font-bold">Name:</span> <span id="node-label"></span></p>
+        <div class="flex justify-end">
+            <button id="close-btn" class="mt-3 px-3 py-2 bg-gray-700 text-white rounded">
+                Close
+            </button>
+        </div>
+    </div>
+    <!-- JS scripts at end of body for better load performance -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
